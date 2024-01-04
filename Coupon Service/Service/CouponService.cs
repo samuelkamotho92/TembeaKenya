@@ -46,7 +46,8 @@ namespace Coupon_Service.Service
         {
             try
             {
-                CouponModel coupon = await _couponDBContext.coupons.Where(x => x.id == id).FirstOrDefaultAsync();
+                var coupon = await _couponDBContext.coupons.Where(x => x.id == id).FirstOrDefaultAsync();
+                Console.WriteLine(coupon);
                 return coupon;
             }
             catch(Exception ex)
@@ -66,7 +67,8 @@ namespace Coupon_Service.Service
         {
             try
             {
-                _couponDBContext.coupons.Update(coupon);
+               _couponDBContext.coupons.Update(coupon);
+               await  _couponDBContext.SaveChangesAsync();
                 return "Coupon updated successfully";
             }
             catch(Exception ex)

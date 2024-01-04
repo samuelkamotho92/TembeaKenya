@@ -20,7 +20,6 @@ namespace Coupon_Service.Controllers
 
         public CouponController(IMapper mapper, ICouponService couponService)
         {
-
             _mapper = mapper;
             _couponService = couponService;
             _responseDto = new ResponseDto();
@@ -64,16 +63,23 @@ namespace Coupon_Service.Controllers
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ResponseDto>> updateCoupon(Guid id)
+        public async Task<ActionResult<ResponseDto>> updateCoupon(Guid id,CouponDto couponDto)
         {
             try
             {
-                var coupon = _couponService.GetCoupon(id);
-                var newcoupon = _mapper.Map<CouponModel>(coupon);
-                string resp = await _couponService.updateCoupon(newcoupon);
-                _responseDto.message = resp;
-                _responseDto.statusCode = System.Net.HttpStatusCode.OK;
-                return Ok(_responseDto);
+                var coupon = await  _couponService.GetCoupon(id);
+                if(coupon != null)
+                {
+                    var newcoupon = _mapper.Map(couponDto,coupon);
+                    string resp = await _couponService.updateCoupon(newcoupon);
+                    _responseDto.message = resp;
+                    _responseDto.result = newcoupon;
+                    _responseDto.statusCode = HttpStatusCode.OK;
+                    return Ok(_responseDto);
+                }
+                _responseDto.errorMessage = "Coupon not found";
+                return BadRequest(_responseDto);
+              
             }
             catch(Exception ex)
             {
@@ -106,9 +112,14 @@ namespace Coupon_Service.Controllers
             try
             {
                 var coupon = await _couponService.GetCoupon(id);
-                string resp = await _couponService.deleteCoupon(coupon);
-                _responseDto.message = resp;
-                return Ok(_responseDto);
+                if(coupon != null)
+                {
+                    string resp = await _couponService.deleteCoupon(coupon);
+                    _responseDto.message = resp;
+                    return Ok(_responseDto);
+                }
+                _responseDto.errorMessage = "Coupon does not exist";
+                return BadRequest(_responseDto);
             }
             catch(Exception ex)
             {

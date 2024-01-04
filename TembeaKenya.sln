@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mail Service", "Mail Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coupon Service", "Coupon Service\Coupon Service.csproj", "{C86CB018-DD1F-42CF-846F-9F503B237D84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService", "HotelService\HotelService.csproj", "{312B840C-F719-4AC9-9086-07B863BB9DCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelService", "HotelService\HotelService.csproj", "{312B840C-F719-4AC9-9086-07B863BB9DCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService", "BookingService\BookingService.csproj", "{8C8B15DB-957C-4C44-8C74-F7E349321F97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{312B840C-F719-4AC9-9086-07B863BB9DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{312B840C-F719-4AC9-9086-07B863BB9DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{312B840C-F719-4AC9-9086-07B863BB9DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C8B15DB-957C-4C44-8C74-F7E349321F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C8B15DB-957C-4C44-8C74-F7E349321F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C8B15DB-957C-4C44-8C74-F7E349321F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C8B15DB-957C-4C44-8C74-F7E349321F97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
