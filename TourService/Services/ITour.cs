@@ -1,4 +1,5 @@
-﻿using TourService.Model;
+﻿using TourService.Dto;
+using TourService.Model;
 
 namespace TourService.Services
 {
@@ -7,7 +8,7 @@ namespace TourService.Services
         //create
         Task<string> createAtour(Tour tour);
         //Get list tour
-        Task<List<Tour>> getTours();
+        Task<List<TourImagesRespDto>> getTours();
         //Get one
         Task<Tour> getTour(Guid id);
 

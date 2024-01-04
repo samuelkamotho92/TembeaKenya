@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TourService.Data;
 using TourService.Dto;
 using TourService.Migrations;
@@ -53,9 +54,22 @@ namespace TourService.Services
             }
         }
 
-        public async  Task<List<Tour>> getTours()
+        public async  Task<List<TourImagesRespDto>> getTours()
         {
-            var  tours =  _context.tours.ToList();
+            var tours = await _context.tours.Select(t => new TourImagesRespDto()
+            {
+                Guid = t.Id,
+                TourName = t.TourName,
+                TourDescription = t.TourDescription,
+                price = t.Price,
+                endDate = t.EndDate,
+                startDate = t.StartDate,
+                TourImages = t.TourImages.Select(x => new AddTourImageDto()
+                {
+                    Image = x.image
+                }).ToList()
+            }).ToListAsync();
+
             return tours;
         }
 
