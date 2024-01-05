@@ -45,7 +45,7 @@ namespace HotelService.Controllers
                 return BadRequest(_responseDto);
             }
         }
-        [HttpGet("Get All hotels in tour{tourId}")]
+        [HttpGet("Get All hotels in tour/{tourId}")]
         [Authorize]
         public async Task<ActionResult<ResponseDto>> GetAllHotelsByTour(Guid tourId)
         {

@@ -2,6 +2,7 @@
 {
     public class HotelDto
     {
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
 
         //Pass an Id of tour while creating a  Hotel;

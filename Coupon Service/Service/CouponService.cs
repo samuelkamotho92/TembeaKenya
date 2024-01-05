@@ -57,6 +57,11 @@ namespace Coupon_Service.Service
         
         }
 
+        public async Task<CouponModel> GetCouponByCode(string code)
+        {
+            return await _couponDBContext.coupons.Where(x=>x.couponCode == code).FirstOrDefaultAsync();
+        }
+
         public async Task<List<CouponModel>> GetCoupons()
         {
            List<CouponModel> coupons =  _couponDBContext.coupons.ToList();

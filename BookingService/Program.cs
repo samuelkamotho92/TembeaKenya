@@ -22,6 +22,16 @@ builder.Services.AddDbContext<BookingDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection"));
 });
 builder.Services.AddScoped<IBookingService, BookingServices>();
+builder.Services.AddScoped<ICoupon, CouponService>();
+builder.Services.AddScoped<ITour,TourService>();
+builder.Services.AddScoped<IHotel, HotelService>();
+builder.Services.AddScoped<IUser,UserService>();
+
+builder.Services.AddHttpClient("Tours", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:TourService")));
+builder.Services.AddHttpClient("Coupons", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:CouponService")));
+builder.Services.AddHttpClient("Hotels", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:HotelService")));
+//builder.Services.AddHttpClient("Users", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:UserService")));
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

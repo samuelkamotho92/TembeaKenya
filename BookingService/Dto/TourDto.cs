@@ -2,6 +2,7 @@
 {
     public class TourDto
     {
+        public Guid Id { get; set; }
         public string TourName { get; set; } = string.Empty;
 
         public string TourDescription { get; set; }

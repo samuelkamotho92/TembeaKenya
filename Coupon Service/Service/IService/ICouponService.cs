@@ -9,6 +9,9 @@ namespace Coupon_Service.Service.IService
 
         Task<CouponModel> GetCoupon(Guid id);
 
+        //Get a coupon by code
+        Task<CouponModel> GetCouponByCode(string code);
+
         Task<string> AddCoupon(CouponModel coupon);
         
         Task<string> updateCoupon(CouponModel coupon);  
