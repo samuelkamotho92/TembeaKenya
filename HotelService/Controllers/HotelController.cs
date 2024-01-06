@@ -45,7 +45,7 @@ namespace HotelService.Controllers
                 return BadRequest(_responseDto);
             }
         }
-        [HttpGet("Get All hotels in tour/{tourId}")]
+        [HttpGet("hotels/{tourId}")]
         [Authorize]
         public async Task<ActionResult<ResponseDto>> GetAllHotelsByTour(Guid tourId)
         {
@@ -62,7 +62,7 @@ namespace HotelService.Controllers
                 return BadRequest(_responseDto);
             }
         }
-        [HttpGet("Get one hotel {tourId}")]
+        [HttpGet("{tourId}")]
         [Authorize]
         public async Task<ActionResult<ResponseDto>> GetHotel(Guid tourId)
         {
@@ -79,7 +79,7 @@ namespace HotelService.Controllers
             }
           
         }
-        [HttpDelete("Delete Hotel{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ResponseDto>> DeleteHotel(Guid id)
         {
@@ -102,7 +102,7 @@ namespace HotelService.Controllers
                 return BadRequest(_responseDto);
             }
         }
-        [HttpPut("Update Hotel{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public  async Task<ActionResult<ResponseDto>> UpdateHotel(Guid id,HotelDto hotelDto)
         {

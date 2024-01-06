@@ -2,6 +2,7 @@ using BookingService.Data;
 using BookingService.Extensions;
 using BookingService.Services;
 using BookingService.Services.IService;
+using BookingService.Utility;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,15 +22,18 @@ builder.Services.AddDbContext<BookingDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection"));
 });
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IBookingService, BookingServices>();
 builder.Services.AddScoped<ICoupon, CouponService>();
 builder.Services.AddScoped<ITour,TourService>();
 builder.Services.AddScoped<IHotel, HotelService>();
 builder.Services.AddScoped<IUser,UserService>();
+builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 
-builder.Services.AddHttpClient("Tours", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:TourService")));
-builder.Services.AddHttpClient("Coupons", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:CouponService")));
-builder.Services.AddHttpClient("Hotels", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:HotelService")));
+builder.Services.AddHttpClient("Tours", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:TourService"))).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddHttpClient("Coupons", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:CouponService"))).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddHttpClient("Hotels", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:HotelService"))).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 //builder.Services.AddHttpClient("Users", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:UserService")));
 
 
