@@ -11,7 +11,6 @@ namespace BookingService.Services
         public BookingServices(BookingDbContext context)
         {
             _context = context;
-
         }
         public async Task<string> AddBooking(Booking booking)
         {
