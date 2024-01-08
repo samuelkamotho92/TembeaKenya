@@ -50,9 +50,17 @@ namespace BookingService.Services
             }
         }
 
+
+
         public async Task<List<Booking>> GetAllBooking(Guid UserId)
         {
           var bookings = await  _context.bookings.Where(x=>x.UserId == UserId).ToListAsync();
+            return bookings;
+        }
+
+        public async Task<List<Booking>> GetAllBookings()
+        {
+            var bookings = await _context.bookings.ToListAsync();
             return bookings;
         }
 

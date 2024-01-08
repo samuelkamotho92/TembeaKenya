@@ -8,6 +8,7 @@ namespace BookingService.Services.IService
 
         Task saveChanges();
         Task<List<Booking>> GetAllBooking(Guid UserId);
+        Task<List<Booking>> GetAllBookings();
         Task<Booking> GetABooking(Guid Id);
 
         Task<string>UpdateBooking (Booking booking);

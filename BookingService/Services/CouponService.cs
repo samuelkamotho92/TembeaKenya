@@ -17,10 +17,12 @@ namespace BookingService.Services
         public async Task<CouponDto> GetCouponByCode(string couponCode)
         {
             var client = _httpClientFactory.CreateClient("Coupons");
+            Console.WriteLine(client);
             var response = await client.GetAsync(couponCode);
             var content = await response.Content.ReadAsStringAsync();
             var responseDto = JsonConvert.DeserializeObject<ResponseDto>(content);
-            if (responseDto.result != null && response.IsSuccessStatusCode)
+            Console.WriteLine(responseDto.result);
+            if (responseDto?.result != null && response.IsSuccessStatusCode)
             {
                 return JsonConvert.DeserializeObject<CouponDto>(responseDto.result.ToString());
             }

@@ -11,12 +11,12 @@ namespace Coupon_Service.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-  
+
     public class CouponController : ControllerBase
     {
         private readonly ICouponService _couponService;
         private readonly ResponseDto _responseDto;
-        private readonly IMapper _mapper;   
+        private readonly IMapper _mapper;
 
         public CouponController(IMapper mapper, ICouponService couponService)
         {
@@ -37,7 +37,7 @@ namespace Coupon_Service.Controllers
                 _responseDto.statusCode = HttpStatusCode.OK;
                 return Created("", _responseDto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _responseDto.errorMessage = ex.Message;
                 return BadRequest(_responseDto);
@@ -59,18 +59,18 @@ namespace Coupon_Service.Controllers
             {
                 _responseDto.errorMessage = ex.Message;
                 return BadRequest(_responseDto);
-            }   
+            }
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ResponseDto>> updateCoupon(Guid id,CouponDto couponDto)
+        public async Task<ActionResult<ResponseDto>> updateCoupon(Guid id, CouponDto couponDto)
         {
             try
             {
-                var coupon = await  _couponService.GetCoupon(id);
-                if(coupon != null)
+                var coupon = await _couponService.GetCoupon(id);
+                if (coupon != null)
                 {
-                    var newcoupon = _mapper.Map(couponDto,coupon);
+                    var newcoupon = _mapper.Map(couponDto, coupon);
                     string resp = await _couponService.updateCoupon(newcoupon);
                     _responseDto.message = resp;
                     _responseDto.result = newcoupon;
@@ -79,9 +79,9 @@ namespace Coupon_Service.Controllers
                 }
                 _responseDto.errorMessage = "Coupon not found";
                 return BadRequest(_responseDto);
-              
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _responseDto.errorMessage = ex.Message;
                 return BadRequest(_responseDto);
@@ -93,12 +93,12 @@ namespace Coupon_Service.Controllers
         {
             try
             {
-                var coupon = await  _couponService.GetCoupon(id);
-                _responseDto.message= "success";
+                var coupon = await _couponService.GetCoupon(id);
+                _responseDto.message = "success";
                 _responseDto.result = coupon;
                 return Ok(_responseDto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _responseDto.errorMessage = ex.Message;
                 return BadRequest(_responseDto);
@@ -112,7 +112,7 @@ namespace Coupon_Service.Controllers
             try
             {
                 var coupon = await _couponService.GetCoupon(id);
-                if(coupon != null)
+                if (coupon != null)
                 {
                     string resp = await _couponService.deleteCoupon(coupon);
                     _responseDto.message = resp;
@@ -121,11 +121,34 @@ namespace Coupon_Service.Controllers
                 _responseDto.errorMessage = "Coupon does not exist";
                 return BadRequest(_responseDto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _responseDto.errorMessage = ex.Message;
                 return BadRequest(_responseDto);
-            }        
+            }
+        }
+
+        [HttpGet("getbycode/{code}")]
+        public async Task<ActionResult<ResponseDto>> getCouponByCode(string code)
+        {
+            try
+            {
+                var coupon = await _couponService.GetCouponByCode(code);
+                if(coupon != null)
+                {
+                    _responseDto.message = "success";
+                    _responseDto.result = coupon;
+                    return Ok(_responseDto);
+                }
+                _responseDto.errorMessage = "coupon does not exist";
+                return BadRequest(_responseDto);
+
+            }
+            catch(Exception ex)
+            {
+            _responseDto.errorMessage=ex.Message;
+           return BadRequest(_responseDto);
+            }
         }
     }
 }

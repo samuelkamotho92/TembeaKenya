@@ -27,6 +27,15 @@ builder.Services.AddDbContext<CouponDBContext>(options =>
 
 //Service injection
 builder.Services.AddScoped<ICouponService, CouponService>();
+
+builder.Services.AddCors(options => options.AddPolicy("policy1", build =>
+{
+
+    build.AllowAnyOrigin();
+    build.AllowAnyHeader();
+    build.AllowAnyMethod();
+}));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,6 +45,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+
 app.UseMigrations();
 
 app.UseHttpsRedirection();
@@ -43,6 +55,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseCors("policy1");
 
 app.MapControllers();
 

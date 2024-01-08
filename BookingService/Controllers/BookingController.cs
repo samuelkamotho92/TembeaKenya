@@ -64,7 +64,10 @@ namespace BookingService.Controllers
         public async Task<ActionResult<ResponseDto>> ApplyCoupon(Guid Id,string code){
             //get a booking based on the Id
             var booking = await _bookingService.GetABooking(Id);
-            if(booking == null)
+            //map it to dto
+            var book = _mapper.Map<Booking>(booking);
+            Console.WriteLine(book);
+            if(book == null)
             {
                 _responseDto.errorMessage = "Booking not found";
                 return NotFound(_responseDto);
@@ -79,8 +82,8 @@ namespace BookingService.Controllers
             //Check if the Amount has the target to be applied coupon ,pass the code and the discount we are applying
             if(coupon.CouponMinAmount <= booking.BookingTotal)
             {
-                booking.CouponCode = coupon.CouponCode;
-                booking.Discount = coupon.CouponAmount;
+                book.CouponCode = coupon.CouponCode;
+                book.Discount = coupon.CouponAmount;
                 await _bookingService.saveChanges();
                 _responseDto.message = "Coupon applied";
                 return Ok(_responseDto);
@@ -96,9 +99,41 @@ namespace BookingService.Controllers
         {
             try
             {
-                var bookings = _bookingService.GetAllBooking(userId);
+                var bookings =   _bookingService.GetAllBooking(userId);
                 _responseDto.result = bookings;
                 _responseDto.message = "success";
+                return Ok(_responseDto);
+            }catch(Exception ex)
+            {
+                _responseDto.errorMessage = ex.Message;
+                return BadRequest(_responseDto);
+            }
+        }
+        [HttpGet("GetOne/{Id}")]
+        public async Task<ActionResult<ResponseDto>> GetBooking(Guid Id)
+        {
+            try
+            {
+                var bookings = await  _bookingService.GetABooking(Id);
+                var booking = _mapper.Map<BookingDto>(bookings);
+                _responseDto.result = bookings;
+                _responseDto.message = "success";
+                return Ok(_responseDto);
+            }
+            catch (Exception ex)
+            {
+                _responseDto.errorMessage = ex.Message;
+                return BadRequest(_responseDto);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult<ResponseDto>> GetAllBookings()
+        {
+            try
+            {
+                var bookings = await _bookingService.GetAllBookings();
+                _responseDto.message = "success";
+                _responseDto.result = bookings;
                 return Ok(_responseDto);
             }catch(Exception ex)
             {
