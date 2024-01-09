@@ -99,7 +99,7 @@ namespace BookingService.Controllers
         {
             try
             {
-                var bookings =   _bookingService.GetAllBooking(userId);
+                var bookings = await  _bookingService.GetAllBooking(userId);
                 _responseDto.result = bookings;
                 _responseDto.message = "success";
                 return Ok(_responseDto);
@@ -109,6 +109,25 @@ namespace BookingService.Controllers
                 return BadRequest(_responseDto);
             }
         }
+
+        [HttpPost("MakePayment")]
+        public async Task<ActionResult<ResponseDto>> MakePayments(StripeRequestDto stripeRequestDto)
+        {
+            try
+            {
+             var resp =  await   _bookingService.MakePayments(stripeRequestDto);
+                _responseDto.result = resp;
+                return Ok(resp);
+            }catch(Exception ex)
+            {
+                _responseDto.errorMessage = ex.Message;
+                return BadRequest(_responseDto);
+
+            }
+        }
+       
+
+
         [HttpGet("GetOne/{Id}")]
         public async Task<ActionResult<ResponseDto>> GetBooking(Guid Id)
         {
@@ -116,7 +135,7 @@ namespace BookingService.Controllers
             {
                 var bookings = await  _bookingService.GetABooking(Id);
                 var booking = _mapper.Map<BookingDto>(bookings);
-                _responseDto.result = bookings;
+                _responseDto.result = booking;
                 _responseDto.message = "success";
                 return Ok(_responseDto);
             }

@@ -17,6 +17,7 @@ namespace Coupon_Service.Service
             try
             {
                await  _couponDBContext.coupons.AddAsync(coupon);
+             
                await _couponDBContext.SaveChangesAsync();
                 return "Coupon added successfully";
             }

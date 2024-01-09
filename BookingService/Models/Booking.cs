@@ -20,5 +20,11 @@
         public Guid TourId { get; set; }    
 
         public Guid HotelId { get; set; }
+
+        public string? StripeSessionId { get; set; }
+
+        public string Status { get; set; } = "Pending";
+
+        public string PaymentIntent { get; set; } = string.Empty;
     }
 }

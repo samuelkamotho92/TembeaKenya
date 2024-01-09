@@ -5,6 +5,7 @@ using Coupon_Service.Service.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using System.Net;
 
 namespace Coupon_Service.Controllers
@@ -35,6 +36,16 @@ namespace Coupon_Service.Controllers
                 _responseDto.result = coupon;
                 _responseDto.message = resp;
                 _responseDto.statusCode = HttpStatusCode.OK;
+                //add in db and stripe
+                var options = new CouponCreateOptions() {   
+                AmountOff=(long) createdCoupon.couponAmount * 100,
+                Currency = "kes",
+                Id=createdCoupon.couponCode,
+                Name=createdCoupon.couponCode                
+                };
+                var service = new CouponService();
+                service.Create(options);
+
                 return Created("", _responseDto);
             }
             catch (Exception ex)
@@ -75,6 +86,17 @@ namespace Coupon_Service.Controllers
                     _responseDto.message = resp;
                     _responseDto.result = newcoupon;
                     _responseDto.statusCode = HttpStatusCode.OK;
+                    var service = new  CouponService();
+                    service.Delete(coupon.couponCode);
+
+                    var options = new CouponCreateOptions() {
+                        AmountOff = (long)newcoupon.couponAmount * 100,
+                        Currency = "kes",
+                        Id = newcoupon.couponCode,
+                        Name = newcoupon.couponCode                   
+                    };
+                    service.Create(options);
+
                     return Ok(_responseDto);
                 }
                 _responseDto.errorMessage = "Coupon not found";
@@ -116,10 +138,12 @@ namespace Coupon_Service.Controllers
                 {
                     string resp = await _couponService.deleteCoupon(coupon);
                     _responseDto.message = resp;
+                    var service = new Stripe.CouponService();
+                    service.Delete(coupon.couponCode);
                     return Ok(_responseDto);
                 }
                 _responseDto.errorMessage = "Coupon does not exist";
-                return BadRequest(_responseDto);
+                return NotFound(_responseDto);
             }
             catch (Exception ex)
             {

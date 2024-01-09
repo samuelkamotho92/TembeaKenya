@@ -15,6 +15,7 @@ namespace BookingService.Services
         {
             var client = _httpClientFactory.CreateClient("Tours");
             var response = await client.GetAsync(guid.ToString());
+            Console.WriteLine(response.Content);
             var content = await response.Content.ReadAsStringAsync();
             var responseDto = JsonConvert.DeserializeObject<ResponseDto>(content);
             if (responseDto?.result != null && response.IsSuccessStatusCode)

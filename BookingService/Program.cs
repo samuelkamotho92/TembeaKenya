@@ -4,6 +4,7 @@ using BookingService.Services;
 using BookingService.Services.IService;
 using BookingService.Utility;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,7 @@ builder.Services.AddDbContext<BookingDbContext>(options =>
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IBookingService, BookingServices>();
-builder.Services.AddScoped<ICoupon, CouponService>();
+builder.Services.AddScoped<ICoupon, BookingService.Services.CouponService>();
 builder.Services.AddScoped<ITour,TourService>();
 builder.Services.AddScoped<IHotel, HotelService>();
 builder.Services.AddScoped<IUser,UserService>();
@@ -36,6 +37,7 @@ builder.Services.AddHttpClient("Coupons", c => c.BaseAddress = new Uri(builder.C
 builder.Services.AddHttpClient("Hotels", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:HotelService"))).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 //builder.Services.AddHttpClient("Users", c => c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceURl:UserService")));
 
+StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("Stripe:Key");
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

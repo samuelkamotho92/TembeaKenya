@@ -1,4 +1,5 @@
-﻿using BookingService.Models;
+﻿using BookingService.Dto;
+using BookingService.Models;
 
 namespace BookingService.Services.IService
 {
@@ -14,5 +15,9 @@ namespace BookingService.Services.IService
         Task<string>UpdateBooking (Booking booking);
 
         Task<string> DeleteBooking(Booking booking);
+
+        Task<StripeRequestDto> MakePayments(StripeRequestDto stripeRequestDto);
+
+        Task<bool> validatePayments(Guid BookingId);
     }
 }

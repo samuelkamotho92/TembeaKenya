@@ -3,6 +3,7 @@ using Coupon_Service.Extensions;
 using Coupon_Service.Service;
 using Coupon_Service.Service.IService;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<CouponDBContext>(options =>
 });
 
 //Service injection
-builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<ICouponService, Coupon_Service.Service.CouponService>();
 
 builder.Services.AddCors(options => options.AddPolicy("policy1", build =>
 {
@@ -37,6 +38,8 @@ builder.Services.AddCors(options => options.AddPolicy("policy1", build =>
 }));
 
 var app = builder.Build();
+
+StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("Stripe:Key");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
